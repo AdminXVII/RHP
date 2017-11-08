@@ -7,3 +7,9 @@ RHP tags are included directly in HTML. However, to enforce the usage of the MVC
 
 ## Intended user-base
 RHP is oriented toward dynamically-generated static webpages. It is not a replacment for Node.js or alike that are intended to provide constant interaction between the server and the user.
+
+# TODO
+Adding snippets tags
+Adding options
+Packaging
+Making the paths more robust
