@@ -1,0 +1,9 @@
+<?inc main ?>
+<html>
+    <head>
+        <title>demo</title>
+    </head>
+    <body>
+        <?= main::content() ?>
+    </body>
+</html>

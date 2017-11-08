@@ -1,0 +1,10 @@
+The RUST Hypertext Preprocessor
+    Usage:
+            rhp -h
+            rhp [-l] [-o OUT_FILE] [-v] [-t TMP_NAME]
+
+    Options
+            -l              Let tmp file; don't erase it. May be used in conjunction with -t to get parsing output
+            -o FILE         Output binary executable to FILE
+            -v              Verbose mode enabled (error are always printed)
+            -t TMP_NAME     Set the tmp file name to TMP_NAME
