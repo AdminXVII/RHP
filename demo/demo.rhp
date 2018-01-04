@@ -1,4 +1,5 @@
-<?inc main ?>
+<?inc ../demo/main ?>
+<?inc sdasdsdsadd ?>
 <html>
     <head>
         <title>demo</title>

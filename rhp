@@ -1,0 +1,78 @@
+#!/usr/bin/perl
+
+##############################################
+#                                            #
+# © Xavier L'Heureux 2017                    #
+# RHP is the Rust Hypertext Preprocessor     #
+# Released under GPL                         #
+#                                            #
+##############################################
+
+# TODO:
+# Add command-line parsing
+
+use File::Basename;
+use strict;
+use warnings;
+use Getopt::Long;
+
+# Global Variables
+my $main = "";                    # Content of the .rhp file to parse
+my $html = "";                    # Final html
+my $includes = "";                # Modules to include
+my $vars = "";                    # Vars to print in html
+my $mainContent = "";             # Content of the main function before the final print
+
+my ($infile, $outfile, $nocompile, $verbose);
+
+die "Usage: rhp [-v] [-n] infile [outfile]\n"
+    unless GetOptions(
+        'v|verbose' => \$verbose,
+        'n|no-compile'  => \$nocompile,
+    ) and $infile = shift;
+$outfile = shift;
+
+
+# Main file read
+open(my $fh, '< :encoding(UTF-8)', $infile) or die "cannot open file $infile";
+{
+    local $/; # ensure that the whole file is included, not just a line
+    $main = <$fh>;
+}
+close($fh);
+
+#open files to includes
+my @includes = $main =~ /(?<=<\?inc )(?:[\.\w]+\/)+\w+(?= ?\?>)/g;
+
+my $num = @includes;
+
+$includes = "";
+foreach my $include (@includes){
+    my($inc, $dir) = fileparse($include, qr/\.rs/);
+    $includes .= "#[path = \"$dir$inc.rs\"]\n";
+	$includes .= "mod $inc;\n";
+    $mainContent .= "\t$inc\:\:init();\n"
+}
+
+#html processing
+$html = ($main =~ s/<\?inc .*\?>//rg); #remove includes
+$html =~ s/<\?= .* \?>/{}/g; # remove prints
+$html =~ s/\n\r|\r\n|\n|\r|\t| {2}//g; # minify
+
+#variables processing
+my @vars = ($main =~ /(?<=<\?= ).+(?= \?>)/g);
+$vars = join ',', @vars;
+
+my $output = "$includes\nfn main(){\n$mainContent\n\tprint!(\"content-type: html\\n\\n$html\",$vars);\n}";
+
+#final output
+if ($outfile){
+    my $handle;
+    open($handle, "> :encoding(UTF-8)", $outfile)|| die "$0: can't open $ARGV[1]";
+    print $handle $output;
+    close($handle);
+} else {
+    print $output;
+}
+
+#system("rustc ");
