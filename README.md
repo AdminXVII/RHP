@@ -1,3 +1,7 @@
+# Abandonware warning
+
+[Go](https://golang.org/) should be prefered in all cases, as it is a language oriented toward web which supports templating and is compiled, but also provide a more massive user-base and a lot of plugins
+
 # RHP: the Rust Hypertext Preprocessor
 
 RHP is designed to keep PHP best innovation while permitting the compiled languages speed. Like PHP, RHP has its own set of tags which are written deirectly in HTML code. It is however a preprocessor, as it compiles in obeject code with the help of rust.
