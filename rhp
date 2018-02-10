@@ -48,10 +48,10 @@ my $num = @includes;
 
 $includes = "";
 foreach my $include (@includes){
-    my($inc, $dir) = fileparse($include, qr/\.rs/);
-    $includes .= "#[path = \"$dir$inc.rs\"]\n";
-	$includes .= "mod $inc;\n";
-    $mainContent .= "\t$inc\:\:init();\n"
+    my($inc, $dir) = fileparse($include, qr/\.rs/); # Include rs files
+    $includes .= "#[path = \"$dir$inc.rs\"]\n"; # add path if not in directory
+    $includes .= "mod $inc;\n"; # include module
+    $mainContent .= "\t$inc\:\:init();\n" # activate module
 }
 
 #html processing
